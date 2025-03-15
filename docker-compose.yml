@@ -1,0 +1,25 @@
+services:
+  grafana:
+    ports: 
+      - 3000:3000
+    image: grafana/grafana
+    # docker run -d --name=grafana -p 3000:3000 grafana/grafana
+
+
+  maratona-prometheus:
+    ports:
+      - 9090:9090
+    image: bitnami/prometheus:latest
+    command:
+      - '--config.file=prometheus.yml'
+    volumes:
+      - type: bind
+        source: prometheus.yml
+        target: /opt/bitnami/prometheus/prometheus.yml
+      - /prometheus
+    
+#docker run -p 0.0.0.0:9090:9090 \
+#        --mount type=bind,source="$(pwd)"/prometheus.yml,target=/opt/bitnami/prometheus/prometheus.yml,readonly \
+#        --volume maratona-promethus-data:/prometheus \
+#        --name maratona-prometheus bitnami/prometheus:latest \
+#        --config.file=prometheus.yml
